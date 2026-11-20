@@ -429,9 +429,35 @@ app.post('/api/admin/change-pin', auth, adminOnly, (req, res) => {
 });
 
 // ---------------- Static frontend ----------------
-app.use(express.static(path.join(__dirname, 'public')));
+// The frontend files normally live in public/ (index.html, style.css, app.js).
+// GitHub's web UI makes it easy to upload them to the wrong place (a folder
+// with a trailing space, an extra nested folder, or the repo root), so resolve
+// each file from the first location where it actually exists.
+const FRONTEND_DIRS = [
+  path.join(__dirname, 'public'),
+  __dirname,
+  path.join(__dirname, 'public '),
+  path.join(__dirname, 'public ', 'src'),
+  path.join(__dirname, 'public ', 'src', 'src'),
+];
+function frontendFile(name) {
+  for (const dir of FRONTEND_DIRS) {
+    const p = path.join(dir, name);
+    if (fs.existsSync(p)) return p;
+  }
+  return path.join(__dirname, 'public', name); // default: surfaces a clear ENOENT
+}
+for (const f of ['index.html', 'app.js', 'style.css']) {
+  console.log('frontend:', f, '->', frontendFile(f));
+}
+const serveFrontend = (name) => (req, res, next) =>
+  res.sendFile(frontendFile(name), (err) => { if (err) next(err); });
+app.get('/', serveFrontend('index.html'));
+app.get('/index.html', serveFrontend('index.html'));
+app.get('/app.js', serveFrontend('app.js'));
+app.get('/style.css', serveFrontend('style.css'));
 app.all('/api/*', (req, res) => res.status(404).json({ error: 'পাওয়া যায়নি' }));
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.get('*', serveFrontend('index.html'));
 
 app.use((err, req, res, next) => {
   console.error(err);
