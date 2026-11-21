@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  },
+  "description": "DK Digital Agency — Facebook services wallet app v2 (PostgreSQL). Customers add money, order services, owner sets price per order. Tahsan Ahmad Sohel.",
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "server.js",
+  "name": "dk-digital-agency",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "2.0.0"
+}
