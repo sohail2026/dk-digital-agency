@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DK Digital Agency — ফেসবুক সকল সার্ভিস</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" onclick="go('home')">
+    <span class="fb-logo">f</span>
+    <div>
+      <div class="brand-title">DK Digital Agency</div>
+      <div class="brand-sub">ফেসবুক সকল সার্ভিস • বাংলাদেশ</div>
+    </div>
+  </div>
+  <div id="balance-chip" class="balance-chip hidden" onclick="go('wallet')">৳ <span id="balance-val">0</span></div>
+</header>
+
+<nav class="nav">
+  <button data-nav="home" onclick="go('home')">🏠 হোম</button>
+  <button data-nav="wallet" onclick="go('wallet')">💰 ওয়ালেট</button>
+  <button data-nav="orders" onclick="go('orders')">📦 অর্ডার</button>
+  <button data-nav="messages" onclick="go('messages')">💬 মেসেজ <span id="msg-badge" class="nav-badge hidden">0</span></button>
+  <button data-nav="admin" id="nav-admin" class="hidden" onclick="go('admin')">⚙️ অ্যাডমিন</button>
+  <button id="nav-auth" onclick="go('login')">🔑 লগইন</button>
+</nav>
+
+<main>
+  <!-- HOME -->
+  <section id="view-home" class="view">
+    <div class="hero">
+      <div class="hero-kicker">বিশ্বস্ত ফেসবুক সার্ভিস</div>
+      <h1>ফেসবুকের সব সমস্যার সমাধান</h1>
+      <p>পেমেন্ট, মনিটাইজেশন, রিকভারি — সব সার্ভিস এক জায়গায়। ওয়ালেটে টাকা রাখুন, সার্ভিস নিন।</p>
+      <div class="steps">
+        <span><b>১</b> অ্যাকাউন্ট খুলুন</span><span><b>২</b> ওয়ালেটে টাকা যোগ করুন</span><span><b>৩</b> সার্ভিস অর্ডার করুন</span>
+      </div>
+    </div>
+    <div class="sec-head">
+      <h2 class="sec-title">আমাদের সার্ভিসসমূহ</h2>
+      <span class="sec-sub">১০টি সার্ভিস — অর্ডারের পর দাম জানিয়ে দেওয়া হবে</span>
+    </div>
+    <div id="service-list" class="services"></div>
+    <div class="note-box">
+      <b>মনে রাখবেন:</b> সকল সার্ভিস নেওয়ার জন্য নির্দিষ্ট পেমেন্ট উল্লেখ করা নেই।
+      বিভিন্ন কাজের জন্য এক এক সার্ভিস চার্জ রয়েছে — অর্ডারের পর আমরা দাম জানিয়ে দেব।
+    </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section id="view-login" class="view hidden">
+    <div class="card form-card">
+      <h2>লগইন</h2>
+      <p class="muted small" style="margin-top:0">মোবাইল নম্বর বা ইমেইল — যেকোনো একটা দিয়ে লগইন করুন</p>
+      <label>মোবাইল নম্বর বা ইমেইল</label>
+      <input id="login-id" type="text" placeholder="01XXXXXXXXX বা you@gmail.com" maxlength="80" autocomplete="username">
+      <label>৪ সংখ্যার PIN</label>
+      <input id="login-pin" type="password" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="current-password">
+      <button class="btn primary" onclick="doLogin()">লগইন</button>
+      <p class="center muted">অ্যাকাউন্ট নেই? <a href="#" onclick="go('register');return false;">রেজিস্টার করুন</a></p>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+  <section id="view-register" class="view hidden">
+    <div class="card form-card">
+      <h2>নতুন অ্যাকাউন্ট</h2>
+      <label>আপনার নাম</label>
+      <input id="reg-name" type="text" placeholder="যেমন: রহিম উদ্দিন" maxlength="60" autocomplete="name">
+      <label>মোবাইল নম্বর <span class="muted">(ঐচ্ছিক)</span></label>
+      <input id="reg-phone" type="tel" placeholder="01XXXXXXXXX" maxlength="11" inputmode="numeric" autocomplete="tel">
+      <div class="or-divider"><span>অথবা</span></div>
+      <label>ইমেইল / জিমেইল <span class="muted">(ঐচ্ছিক)</span></label>
+      <input id="reg-email" type="email" placeholder="you@gmail.com" maxlength="80" autocomplete="email">
+      <p class="muted small">মোবাইল নম্বর বা ইমেইল — যেকোনো একটা দিলেই হবে।</p>
+      <label>৪ সংখ্যার PIN বেছে নিন</label>
+      <input id="reg-pin" type="password" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="new-password">
+      <button class="btn primary" onclick="doRegister()">অ্যাকাউন্ট খুলুন</button>
+      <p class="center muted">অ্যাকাউন্ট আছে? <a href="#" onclick="go('login');return false;">লগইন করুন</a></p>
+    </div>
+  </section>
+
+  <!-- WALLET -->
+  <section id="view-wallet" class="view hidden">
+    <div class="card wallet-card">
+      <div class="muted">আপনার ব্যালেন্স</div>
+      <div class="big-balance">৳ <span id="wallet-balance">0</span></div>
+      <button class="btn primary" onclick="go('deposit')">➕ টাকা যোগ করুন</button>
+    </div>
+    <h2 class="sec-title">লেনদেনের হিসাব</h2>
+    <div id="tx-list" class="list"></div>
+    <h2 class="sec-title">ডিপোজিট অনুরোধ</h2>
+    <div id="dep-list" class="list"></div>
+  </section>
+
+  <!-- DEPOSIT -->
+  <section id="view-deposit" class="view hidden">
+    <div class="card form-card">
+      <h2>টাকা যোগ করুন</h2>
+      <div class="pay-box">
+        <div class="muted">নিচের নম্বরে Send Money করুন</div>
+        <div class="pay-number" id="pay-number">01833990497</div>
+        <div class="muted">bKash / Nagad — Personal</div>
+        <button class="btn small" onclick="copyPayNumber()">📋 নম্বর কপি করুন</button>
+      </div>
+      <label>কোন মাধ্যমে পাঠিয়েছেন?</label>
+      <select id="dep-method"><option value="bKash">bKash</option><option value="Nagad">Nagad</option></select>
+      <label>টাকার পরিমাণ (৳)</label>
+      <input id="dep-amount" type="number" min="1" placeholder="যেমন: 1000" inputmode="numeric">
+      <label>TrxID</label>
+      <input id="dep-trxid" type="text" placeholder="যেমন: 9HX7K2LM1A" maxlength="20" style="text-transform:uppercase">
+      <button class="btn primary" onclick="submitDeposit()">জমা দিন</button>
+      <p class="muted small">টাকা পাঠানোর পর TrxID দিয়ে জমা দিন। অ্যাডমিন যাচাই করে অনুমোদন দিলে ব্যালেন্সে টাকা যোগ হবে।</p>
+    </div>
+  </section>
+
+  <!-- ORDER FORM -->
+  <section id="view-orderform" class="view hidden">
+    <div class="card form-card">
+      <h2>সার্ভিস অর্ডার</h2>
+      <div class="order-service" id="order-service-name"></div>
+      <label>আপনার সমস্যাটি সংক্ষেপে লিখুন</label>
+      <textarea id="order-desc" rows="4" maxlength="500" placeholder="যেমন: আমার পেমেন্ট পেইড দেখাচ্ছে কিন্তু ব্যাংকে টাকা আসেনি..."></textarea>
+      <button class="btn primary" onclick="submitOrder()">অর্ডার করুন</button>
+      <p class="muted small">অর্ডারের পর অ্যাডমিন দাম নির্ধারণ করবেন। দাম দেখে আপনি কনফার্ম করলে ওয়ালেট থেকে টাকা কাটবে।</p>
+    </div>
+  </section>
+
+  <!-- MY ORDERS -->
+  <section id="view-orders" class="view hidden">
+    <h2 class="sec-title">আমার অর্ডার</h2>
+    <div id="order-list" class="list"></div>
+  </section>
+
+  <!-- MESSAGES (customer) -->
+  <section id="view-messages" class="view hidden">
+    <h2 class="sec-title">অ্যাডমিনের সাথে মেসেজ</h2>
+    <p class="muted small" style="margin-top:-6px">যেকোনো প্রশ্ন বা সমস্যা এখানে লিখুন — অ্যাডমিন উত্তর দেবেন।</p>
+    <div class="card chat-card">
+      <div id="chat-box" class="chat-box"><div class="empty">এখনো কোনো মেসেজ নেই — নিচে লিখে পাঠান</div></div>
+      <div class="chat-input-row">
+        <input id="chat-text" type="text" placeholder="মেসেজ লিখুন..." maxlength="2000" autocomplete="off">
+        <button class="btn primary inline" onclick="sendMessage()">পাঠান</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="view-admin" class="view hidden">
+    <h2 class="sec-title">অ্যাডমিন প্যানেল</h2>
+    <div id="admin-stats" class="stats"></div>
+    <div class="tabs">
+      <button class="tab active" data-tab="dep" onclick="adminTab('dep')">💰 ডিপোজিট</button>
+      <button class="tab" data-tab="ord" onclick="adminTab('ord')">📦 অর্ডার</button>
+      <button class="tab" data-tab="msg" onclick="adminTab('msg')">💬 মেসেজ <span id="admin-msg-badge" class="tab-badge hidden">0</span></button>
+      <button class="tab" data-tab="cus" onclick="adminTab('cus')">👥 কাস্টমার</button>
+      <button class="tab" data-tab="set" onclick="adminTab('set')">⚙️ সেটিংস</button>
+    </div>
+    <div id="admin-dep" class="tab-body"><div id="admin-dep-list" class="list"></div></div>
+    <div id="admin-ord" class="tab-body hidden">
+      <div class="filter-row">
+        <select id="admin-order-filter" onchange="loadAdminOrders()">
+          <option value="">সব অর্ডার</option>
+          <option value="awaiting_price">দামের জন্য অপেক্ষা</option>
+          <option value="awaiting_payment">পেমেন্টের অপেক্ষা</option>
+          <option value="in_progress">কাজ চলছে</option>
+          <option value="completed">সম্পন্ন</option>
+          <option value="cancelled">বাতিল</option>
+        </select>
+      </div>
+      <div id="admin-order-list" class="list"></div>
+    </div>
+    <div id="admin-msg" class="tab-body hidden">
+      <div id="admin-msg-list" class="list"></div>
+      <div id="admin-chat-wrap" class="card chat-card hidden">
+        <div class="chat-head">
+          <b id="admin-chat-name"></b>
+          <button class="btn small" onclick="closeAdminChat()">✕ বন্ধ করুন</button>
+        </div>
+        <div id="admin-chat-box" class="chat-box"></div>
+        <div class="chat-input-row">
+          <input id="admin-chat-text" type="text" placeholder="উত্তর লিখুন..." maxlength="2000" autocomplete="off">
+          <button class="btn primary inline" onclick="sendAdminMessage()">পাঠান</button>
+        </div>
+      </div>
+    </div>
+    <div id="admin-cus" class="tab-body hidden"><div id="admin-cus-list" class="list"></div></div>
+    <div id="admin-set" class="tab-body hidden">
+      <div class="card form-card">
+        <h3>পেমেন্ট নম্বর</h3>
+        <p class="muted small">কাস্টমাররা এই নম্বরে bKash/Nagad-এ টাকা পাঠাবে।</p>
+        <input id="set-pay-number" type="tel" maxlength="11" inputmode="numeric">
+        <button class="btn primary" onclick="saveSettings()">সংরক্ষণ করুন</button>
+      </div>
+      <div class="card form-card">
+        <h3>অ্যাডমিন PIN পরিবর্তন</h3>
+        <label>পুরনো PIN</label>
+        <input id="pin-old" type="password" maxlength="4" inputmode="numeric">
+        <label>নতুন PIN (৪ সংখ্যা)</label>
+        <input id="pin-new" type="password" maxlength="4" inputmode="numeric">
+        <button class="btn primary" onclick="changePin()">PIN পরিবর্তন করুন</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<a class="wa-float" href="https://wa.me/8801833990497" target="_blank" rel="noopener" title="WhatsApp-এ যোগাযোগ করুন">
+  <svg viewBox="0 0 32 32" width="30" height="30" fill="#fff"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 5.9L4 29l8.3-1.5A11.9 11.9 0 0 0 16 27c6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-4.9.9.9-4.8-.2-.4A9.8 9.8 0 1 1 16 24.8zm5.5-7.3c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4z"/></svg>
+</a>
+
+<div id="toast" class="toast hidden"></div>
+<script src="/app.js"></script>
+</body>
+</html>
